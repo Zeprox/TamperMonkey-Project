@@ -4,8 +4,7 @@ function printm(ClassName) {
         document.body.innerHTML = printContents;
         window.print();
         document.body.innerHTML = originalContents;
-
+        document.getElementsByClassName('prints')[0].children[0].addEventListener("click", function(){printm('main-reading-area')});
     };
-document.getElementsByClassName('prints')[0].addEventListener("click", printm('main-reading-area'));
-console.log('insert it')
+document.getElementsByClassName('prints')[0].children[0].addEventListener("click", function(){printm('main-reading-area')});console.log('insert it')
 
