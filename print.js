@@ -7,3 +7,5 @@ function printm(ClassName) {
 
     };
 document.getElementsByClassName('prints')[0].addEventListener("click", printm(ClassName));
+console.log('insert it')
+
