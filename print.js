@@ -6,6 +6,6 @@ function printm(ClassName) {
         document.body.innerHTML = originalContents;
 
     };
-document.getElementsByClassName('prints')[0].addEventListener("click", printm(ClassName));
+document.getElementsByClassName('prints')[0].addEventListener("click", printm('main-reading-area'));
 console.log('insert it')
 
