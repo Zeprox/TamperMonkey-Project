@@ -28,7 +28,7 @@ var formval = false;
 
 function formdata(){
   style = document.createElement('style');
-  const stylehtml = '.darkmode .print-menu .chapter_body .select-label select {\n    border: none;\n    background: #282731;\n    box-shadow: 0 1px 3px -2px #2f2f2f;\n    color: #999;\n}\n.print-menu .chapter_body .select-label select {\n    -webkit-appearance: none;\n    padding: 7px 40px 7px 12px;\n    border: 1px solid #999;\n    border-radius: 5px;\n    min-width: 12.5rem;\n    background: #cfcfcf;\n    box-shadow: 0 1px 3px 2px #cfcfcf;\n    cursor: pointer;\n    font-family: inherit;\n    font-weight: 500;\n    font-size: .9em;\n    transition: all 150ms ease;\n}';
+  const stylehtml = '.darkmode .print-menu .select-label #chapter_list select {\n    border: none;\n    background: #282731;\n    box-shadow: 0 1px 3px -2px #2f2f2f;\n    color: #999;\n}\n.print-menu .select-label #chapterlist select {\n    -webkit-appearance: none;\n    padding: 7px 40px 7px 12px;\n    border: 1px solid #999;\n    border-radius: 5px;\n    min-width: 12.5rem;\n    background: #cfcfcf;\n    box-shadow: 0 1px 3px 2px #cfcfcf;\n    cursor: pointer;\n    font-family: inherit;\n    font-weight: 500;\n    font-size: .9em;\n    transition: all 150ms ease;\n}';
   style.innerHTML = stylehtml;
   document.head.appendChild(style);
   const chapterrelease = document.getElementsByClassName('komik_info-chapters-item');
@@ -40,7 +40,7 @@ function formdata(){
   label.className = 'select-label';
   select = document.createElement('select');
   select.name = 'chapter';
-  select.id = 'chapterlist';
+  select.className = 'chapter_list';
   svg = document.createElement('svg');
   svg2 = document.createElement('svg');
   svg2.innerHTML = '<use xlink:href="#select-arrow-down"></use>';
@@ -63,7 +63,6 @@ function formdata(){
   label.appendChild(svg2);
   div.appendChild(label);
   document.getElementsByClassName('komik_info-body')[0].append(div);
-  var formval = true
 }
 
 function printmultiple(){
@@ -83,4 +82,6 @@ if(nurl[0] == 'chapter'){
 if(nurl[0] == 'komik'){
   if(formval){
   }else{document.getElementsByClassName('design-menu')[0].onclick = function(){formdata()}}
+  console.log(formval)
 }
+
