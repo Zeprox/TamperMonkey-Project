@@ -46,7 +46,7 @@ function formdata(){
   poly.points = '1 1 5 5 9 1';
   symbol.appendChild(poly);
   svg.appendChild(symbol);
-  document.getElementsByClassName('komik_info').append(svg);
+  document.getElementsByClassName('komik_info')[0].append(svg);
   for(var x=0;x<chapterrelease.length;x++){
     option = document.createElement('option');
     option.value = chapterrelease[x].children[0].href;
