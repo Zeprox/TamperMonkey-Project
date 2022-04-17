@@ -38,8 +38,7 @@ function formdata(){
   svg = document.createElement('svg');
   svg2 = document.createElement('svg');
   use = document.createElement('use');
-  use.href.animVal = '#select-arrow-down';
-  use.href.baseVal = '#select-arrow-down';
+  use.outerHTML = '<use xlink:href="#select-arrow-down"></use>';
   svg2.appendChild(use);
   svg.className = 'sprites';
   symbol = document.createElement('symbol');
