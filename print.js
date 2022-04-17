@@ -37,9 +37,7 @@ function formdata(){
   select.id = 'chapterlist';
   svg = document.createElement('svg');
   svg2 = document.createElement('svg');
-  use = document.createElement('use');
-  svg2.appendChild(use);
-  svg2.children[0].outerHTML = '<use xlink:href="#select-arrow-down"></use>';
+  svg2.innerHTML = '<use xlink:href="#select-arrow-down"></use>';
   svg.className = 'sprites';
   symbol = document.createElement('symbol');
   symbol.id = 'select-arrow-down';
@@ -48,7 +46,7 @@ function formdata(){
   poly.points = '1 1 5 5 9 1';
   symbol.appendChild(poly);
   svg.appendChild(symbol);
-  document.getElementsbyClassName('komik_info').append(svg);
+  document.getElementsByClassName('komik_info').append(svg);
   for(var x=0;x<chapterrelease.length;x++){
     option = document.createElement('option');
     option.value = chapterrelease[x].children[0].href;
@@ -71,7 +69,6 @@ var nurl = removeItemAll(document.baseURI.split('/'),'');
 for(var y=0;y<2;y++){
    nurl.splice(0,1);
 }
-window.alert(nurl)
 
 if(nurl[0] == 'chapter'){
   document.getElementsByClassName('prints')[0].children[0].onclick = function(){printm('main-reading-area')}
