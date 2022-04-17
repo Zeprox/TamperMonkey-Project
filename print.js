@@ -1,3 +1,4 @@
+
 function removeItemAll(arr, value) {
         var i = 0;
         while (i < arr.length) {
@@ -23,12 +24,17 @@ function validateva(val){
   
 }
 
+var formval = false;
+
 function formdata(){
   style = document.createElement('style');
-  const stylehtml = '.komik_info-body .select-label select{\n    border:none;\n    background:#282731;\n    box-shadow:0 1px 3px -2px #2f2f2f;\n    color:#999\n    }\n.darkmode .komik_info-body .select-label select option{\n    color:#999;\n    }\n.darkmode .komik_info-body .select-label select option[value=""][disabled]{\n    display:none;\n    }\n.darkmode .komik_info-body .select-label select:focus{\n    outline:none;\n    border-color:#999;box-shadow:0 0 0 2px #2f2f2f;\n    }\n.darkmode .komik_info-body .select-label select:hover+svg{\n    stroke:#999;\n    }\n.komik_info-body .select-label{\n    position:relative;\n    }\n.komik_info-body .select-label svg{\n    position:absolute;\n    right:10%;\n    top:calc(50% - 3px);\n    width:10px;\n    height:6px;\n    stroke-width:2px;\n    stroke:#9098a9;\n    fill:none;\n    stroke-linecap:round;\n    stroke-linejoin:round;\n    pointer-events:none;\n    }\n.komik_info-body .select-label select{\n    -webkit-appearance:none;\n    padding:7px 40px 7px 12px;\n    border:1px solid #999;\n    border-radius:\n    background:#cfcfcf;\n    bo`x-shadow:0 1px 3px -2px #cfcfcf;\n    cursor:pointer;\n    font-family:inherit;\n    font-weight:500;\n    font-size:.9em;\n    transition:all 150ms ease;\n    }\n.komik_info-body .select-label select option{\n    color:#999;\n    }\n.komik_info-body .select-label select option[value=""][disabled]{\n    display:none;\n    }\n.komik_info-body .select-label select:focus{\n    outline:none;\n    border-color:#999;\n    box-shadow:0 0 0 2px #cfcfcf;\n    }\n.komik_info-body .select-label select:hover+svg{\n    stroke:#272727;\n    }\n.sprites{\n    position:absolute;\n    width:0;\n    height:0;\n    pointer-events:none;\n    user-select:none\n    }';
+  const stylehtml = '.darkmode .chapter_body .select-label select {\n    border: none;\n    background: #282731;\n    box-shadow: 0 1px 3px -2px #2f2f2f;\n    color: #999;\n}\n.chapter_body .select-label select {\n    -webkit-appearance: none;\n    padding: 7px 40px 7px 12px;\n    border: 1px solid #999;\n    border-radius: 5px;\n    min-width: 12.5rem;\n    background: #cfcfcf;\n    box-shadow: 0 1px 3px 2px #cfcfcf;\n    cursor: pointer;\n    font-family: inherit;\n    font-weight: 500;\n    font-size: .9em;\n    transition: all 150ms ease;\n}';
   style.innerHTML = stylehtml;
   document.head.appendChild(style);
-  const chapterrelease = document.getElementsByClassName('komik_info-chapters-item')
+  const chapterrelease = document.getElementsByClassName('komik_info-chapters-item');
+  div = document.createElement('div');
+  div.className = 'print-menu';
+  div.style = 'padding: 1rem;';
   label = document.createElement('label');
   label.for = 'chapter';
   label.className = 'select-label';
@@ -50,13 +56,14 @@ function formdata(){
   for(var x=0;x<chapterrelease.length;x++){
     option = document.createElement('option');
     option.value = chapterrelease[x].children[0].href;
-    option.name = chapterrelease[x].children[0].text;
+    option.text = chapterrelease[x].children[0].text;
     select.insertAdjacentElement('afterBegin',option);
   }
-  select.appendChild(svg2);
+  label.appendChild(svg2);
   label.appendChild(select);
-  document.getElementsByClassName('komik_info-body')[0].append(label);
-  
+  div.appendChild(label);
+  document.getElementsByClassName('komik_info-body')[0].append(div);
+  formval = true
 }
 
 function printmultiple(){
@@ -74,5 +81,6 @@ if(nurl[0] == 'chapter'){
   document.getElementsByClassName('prints')[0].children[0].onclick = function(){printm('main-reading-area')}
 }
 if(nurl[0] == 'komik'){
-  document.getElementsByClassName('design-menu')[0].onclick = function(){formdata()}
+  if(formval){continue};
+  else{document.getElementsByClassName('design-menu')[0].onclick = function(){formdata()}}
 }
