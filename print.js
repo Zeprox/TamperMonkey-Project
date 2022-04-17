@@ -77,7 +77,7 @@ function formdata(){
 function formdata2(){
   span = document.createElement('span')
   span.style = 'display: flex;align-content: space-around;justify-content: space-between;align-items: center;';
-  span.innerText = 'From: ';
+  span.innerText = 'To: ';
   document.getElementsByClassName('print-menu')[1].append(span);
   const chapterrelease = document.getElementsByClassName('komik_info-chapters-item');
   label = document.createElement('label');
@@ -113,6 +113,6 @@ if(nurl[0] == 'chapter'){
   document.getElementsByClassName('prints')[0].children[0].onclick = function(){printm('main-reading-area')}
 }
 if(nurl[0] == 'komik'){
-  document.getElementsByClassName('design-menu')[0].onclick = function(){formdata()}
+  document.getElementsByClassName('design-menu')[0].children[0].onclick = function(){formdata()}
 }
 
