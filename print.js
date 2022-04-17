@@ -75,5 +75,5 @@ if(nurl[0] == 'chapter'){
   document.getElementsByClassName('prints')[0].children[0].onclick = function(){printm('main-reading-area')}
 }
 if(nurl[0] == 'komik'){
-  document.getElementsByClassName('design-menu')[0].onclick = function(){formdata()
+  document.getElementsByClassName('design-menu')[0].onclick = function(){formdata()}
 }
