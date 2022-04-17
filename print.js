@@ -64,8 +64,8 @@ function formdata(){
 
 function printmultiple(){
   var answer1 = form('Please input number')
-  if answer
-  var answer2
+  //if answer
+  //var answer2
 }
 
 var nurl = removeItemAll(document.baseURI.split('/'),'');
