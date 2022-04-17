@@ -9,3 +9,4 @@ window.addEventListener('load', function() {
     };
 document.getElementsByClassName('prints')[0].children[0].addEventListener("click", function(){printm('main-reading-area')})
 }, false);
+document.getElementsByClassName('prints')[0].children[0].onclick = function(){console.log('test')}
