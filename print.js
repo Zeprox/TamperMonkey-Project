@@ -66,13 +66,44 @@ function formdata(){
   div.appendChild(label);
   document.getElementsByClassName('komik_info-body')[0].append(div);
   formval=true;
+  formdata2();
   }
 }
 
-function printmultiple(){
-  var answer1 = form('Please input number')
-  //if answer
-  //var answer2
+function formdata2(){
+  }else{
+  const chapterrelease = document.getElementsByClassName('komik_info-chapters-item');
+  label = document.createElement('label');
+  label.for = 'chapter';
+  label.className = 'select-label';
+  select = document.createElement('select');
+  select.name = 'chapter';
+  select.className = 'chapter_list';
+  svg = document.createElement('svg');
+  svg2 = document.createElement('svg');
+  svg2.innerHTML = '<use xlink:href="#select-arrow-down"></use>';
+  svg.className = 'sprites';
+  symbol = document.createElement('symbol');
+  symbol.id = 'select-arrow-down';
+  symbol.viewBox = '0 0 10 0';
+  poly = document.createElement('polyline');
+  poly.points = '1 1 5 5 9 1';
+  symbol.appendChild(poly);
+  svg.appendChild(symbol);
+  document.getElementsByClassName('komik_info')[0].append(svg);
+  for(var x=0;x<chapterrelease.length;x++){
+    option = document.createElement('option');
+    option.value = chapterrelease[x].children[0].href;
+    option.text = chapterrelease[x].children[0].text;
+    select.insertAdjacentElement('afterBegin',option);
+  }
+  label.appendChild(select);
+  label.appendChild(svg2);
+  document.getElementsByClassName('print-menu')[1].append(label);
+}
+
+function download(){
+  
 }
 
 var nurl = removeItemAll(document.baseURI.split('/'),'');
