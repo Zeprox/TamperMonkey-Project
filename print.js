@@ -36,7 +36,11 @@ function formdata(){
   const chapterrelease = document.getElementsByClassName('komik_info-chapters-item');
   div = document.createElement('div');
   div.className = 'print-menu';
-  div.style = 'padding: 1rem;';
+  div.style = 'padding: 1rem;padding: 1rem;gap: 5px;display: flex;justify-content: normal;';
+  span = document.createElement('span')
+  span.style = 'display: flex;align-content: space-around;justify-content: space-between;align-items: center;';
+  span.text = 'From: ';
+  div.appendChild(span);
   label = document.createElement('label');
   label.for = 'chapter';
   label.className = 'select-label';
@@ -71,6 +75,10 @@ function formdata(){
 }
 
 function formdata2(){
+  span = document.createElement('span')
+  span.style = 'display: flex;align-content: space-around;justify-content: space-between;align-items: center;';
+  span.text = 'From: ';
+  document.getElementsByClassName('print-menu')[1].append(span);
   const chapterrelease = document.getElementsByClassName('komik_info-chapters-item');
   label = document.createElement('label');
   label.for = 'chapter';
