@@ -19,7 +19,7 @@ function printm(ClassName) {
     document.getElementsByClassName('prints')[0].children[0].addEventListener("click", function(){printm('main-reading-area')});
     };
 
-function validateva;(val){
+function validateva(val){
   
 }
 
