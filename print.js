@@ -39,7 +39,7 @@ function formdata(){
   div.style = 'padding: 1rem;padding: 1rem;gap: 5px;display: flex;justify-content: normal;';
   span = document.createElement('span')
   span.style = 'display: flex;align-content: space-around;justify-content: space-between;align-items: center;';
-  span.text = 'From: ';
+  span.innerText = 'From: ';
   div.appendChild(span);
   label = document.createElement('label');
   label.for = 'chapter';
@@ -77,7 +77,7 @@ function formdata(){
 function formdata2(){
   span = document.createElement('span')
   span.style = 'display: flex;align-content: space-around;justify-content: space-between;align-items: center;';
-  span.text = 'From: ';
+  span.innerText = 'From: ';
   document.getElementsByClassName('print-menu')[1].append(span);
   const chapterrelease = document.getElementsByClassName('komik_info-chapters-item');
   label = document.createElement('label');
@@ -86,17 +86,8 @@ function formdata2(){
   select = document.createElement('select');
   select.name = 'chapter';
   select.className = 'chapter_list';
-  svg = document.createElement('svg');
   svg2 = document.createElement('svg');
   svg2.innerHTML = '<use xlink:href="#select-arrow-down"></use>';
-  svg.className = 'sprites';
-  symbol = document.createElement('symbol');
-  symbol.id = 'select-arrow-down';
-  symbol.viewBox = '0 0 10 0';
-  poly = document.createElement('polyline');
-  poly.points = '1 1 5 5 9 1';
-  symbol.appendChild(poly);
-  svg.appendChild(symbol);
   document.getElementsByClassName('komik_info')[0].append(svg);
   for(var x=0;x<chapterrelease.length;x++){
     option = document.createElement('option');
