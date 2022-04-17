@@ -69,10 +69,11 @@ function printmultiple(){
 }
 
 var nurl = removeItemAll(document.baseURI.split('/'),'');
+window.alert(nurl)
 
 if(nurl[0] == 'chapter'){
   document.getElementsByClassName('prints')[0].children[0].onclick = function(){printm('main-reading-area')}
 }
 if(nurl[0] == 'komik'){
-  formdata()
+  document.getElementsByClassName('design-menu')[0].onclick = function(){formdata()
 }
