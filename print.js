@@ -71,7 +71,6 @@ function formdata(){
 }
 
 function formdata2(){
-  }else{
   const chapterrelease = document.getElementsByClassName('komik_info-chapters-item');
   label = document.createElement('label');
   label.for = 'chapter';
