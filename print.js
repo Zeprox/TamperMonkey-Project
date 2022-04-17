@@ -69,6 +69,9 @@ function printmultiple(){
 }
 
 var nurl = removeItemAll(document.baseURI.split('/'),'');
+for(var y=0;y<2;y++){
+   nurl.splice(0,1);
+}
 window.alert(nurl)
 
 if(nurl[0] == 'chapter'){
