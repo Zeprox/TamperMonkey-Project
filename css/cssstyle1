@@ -1,0 +1,44 @@
+.chapter_nav-control > .middle-control{
+  display:flex;
+  flex-flow:row wrap;
+  gap:1rem;
+  justify-content:space-between;
+  align-items:center;
+  display:flex;
+  flex-flow:row wrap;
+  align-items:center;
+  gap:1rem;
+}
+.chapter_nav-control > .middle-control > .prints> a[rel=pr]:hover{
+  background-color:#282731;
+  color:#fff;
+  }
+.chapter_nav-control > .middle-control > .prints{
+  flex-flow:row nowrap;
+  justify-content:space-between;
+  width:100%;
+  display:flex;
+  align-items:center;
+  margin:10px 0;
+  padding:5px 0;
+  }
+.chapter_nav-control > .middle-control > .prints> a[rel=pr]{
+  display: block;
+  padding: 0.5rem 2rem;
+  border-radius: 5px;
+  color: #ccc;
+  font-size: .925em;
+  font-weight: 500;
+  background: #2451b2;
+  cursor: pointer;
+  margin: 0;
+  float: none;
+  box-shadow: none;
+  gap:1rem;
+  border: none;
+}
+.darkmode .design-link{
+  background: #282731;
+  box-shadow: 0 1px 3px -2px #2f2f2f;
+  padding: 3px 12px 2px 12px;
+}
