@@ -1,0 +1,38 @@
+.darkmode .design-print:hover{
+	border: 1px solid #fff;
+	color: white!important;
+}
+.darkmode .design-print{
+	border: none;
+	background: #282731;
+	box-shadow: 0 1px 3px -2px #2f2f2f;
+}
+.design-print{
+	background: #cfcfcf;
+	box-shadow: 0 1px 3px 2px #cfcfcf;
+	border: 1px solid #999;
+}
+.design-menu{
+	overflow:hidden;
+	display:flex;
+	flex-direction:row;
+	flex-wrap:wrap;
+	justify-content:center;
+	align-items:center;
+	width:100%;
+	gap:.25rem
+}
+.design-link{
+	cursor: pointer;
+	display:flex;
+	margin-right:5px;
+	margin-bottom:5px;
+	color:#000;
+	padding:.1rem 1rem;
+	line-height:26px;
+	font-size:12px;
+	border-radius:3px
+}
+.design-link:active{
+	color:#fff
+}
