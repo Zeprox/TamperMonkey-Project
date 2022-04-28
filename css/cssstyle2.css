@@ -1,13 +1,13 @@
-.darkmode .design-print:hover{
+.darkmode .design-button:hover{
 	border: 1px solid #fff;
 	color: white!important;
 }
-.darkmode .design-print{
+.darkmode .design-button{
 	border: none;
 	background: #282731;
 	box-shadow: 0 1px 3px -2px #2f2f2f;
 }
-.design-print{
+.design-button{
 	background: #cfcfcf;
 	box-shadow: 0 1px 3px 2px #cfcfcf;
 	border: 1px solid #999;
