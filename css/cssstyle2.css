@@ -1,13 +1,13 @@
-.darkmode .design-button:hover{
+.darkmode .design-link:hover{
 	border: 1px solid #fff;
 	color: white!important;
 }
-.darkmode .design-button{
+.darkmode .design-link{
 	border: none;
 	background: #282731;
 	box-shadow: 0 1px 3px -2px #2f2f2f;
 }
-.design-button{
+.design-link{
 	background: #cfcfcf;
 	box-shadow: 0 1px 3px 2px #cfcfcf;
 	border: 1px solid #999;
@@ -32,6 +32,9 @@
 	line-height:26px;
 	font-size:12px;
 	border-radius:3px
+	background: #cfcfcf;
+	box-shadow: 2px 2px 3px 2px #cfcfcf;
+	border: 1px solid #999;
 }
 .design-link:active{
 	color:#fff
