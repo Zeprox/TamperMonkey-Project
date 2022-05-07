@@ -1,5 +1,5 @@
 .darkmode .design-link:hover{
-	border: 1px solid #fff;
+	border: 1px solid #99B!important;
 	color: white!important;
 }
 .darkmode .design-link{
@@ -7,11 +7,7 @@
 	background: #282731;
 	box-shadow: 0 1px 3px -2px #2f2f2f;
 }
-.design-link{
-	background: #cfcfcf;
-	box-shadow: 0 1px 3px 2px #cfcfcf;
-	border: 1px solid #999;
-}
+
 .design-menu{
 	overflow:hidden;
 	display:flex;
