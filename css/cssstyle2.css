@@ -27,10 +27,11 @@
 	padding:.1rem 1rem;
 	line-height:26px;
 	font-size:12px;
-	border-radius:3px
+	border-radius:3px;
 	background: #cfcfcf;
 	box-shadow: 2px 2px 3px 2px #cfcfcf;
 	border: 1px solid #999;
+	margin-bottom: 10px;
 }
 .design-link:active{
 	color:#fff
