@@ -28,6 +28,26 @@
         }
         return Arr
     }
+    HTMLElement.prototype.getElementsByInnerText = function (text, escape) {
+        var nodes  = this.querySelectorAll("*");
+        var matches = [];
+        for (var i = 0; i < nodes.length; i++) {
+            if (nodes[i].textContent.includes(text)) {
+                matches.push(nodes[i]);
+            }
+        }
+        if (escape) {
+            return matches;
+        }
+        var result = [];
+        for (var i = 0; i < matches.length; i++) {
+            var filter = matches[i].getElementsByInnerText(text, true);
+            if (filter.length == 0) {
+                result.push(matches[i]);
+            }
+        }
+        return result;
+    };
 })();
 
 
