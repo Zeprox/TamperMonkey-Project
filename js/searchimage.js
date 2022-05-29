@@ -1,6 +1,36 @@
 // this js for searching image from how many image in website
 // purpose : search for manga,etc in website
 
+(function prototypeval(){
+    String.prototype.replaceBetween = function(start,end,value){
+            return this.substring(0,start) + value + this.substring(end);
+    }
+    Array.prototype.ArrayindexOf = function(key,value) {
+        key = typeof key == 'string' ? key : undefined
+        for(var x =0; x< this.length;x++){
+            if (this[x].includes(value)){return x}
+            else if (key !== undefined && this[x][1][key].includes(value)){return x}
+        }
+    }
+    Number.prototype.isEven = function(){ return this % 2 == 0}
+    Number.prototype.isOdd = function(){ return Math.abs(this % 2) == 1}
+    Array.prototype.ArrayFromTo = function(From,To){
+        if (typeof From !== 'number' || typeof To !== 'number'){
+            throw new TypeError("Value is not number")
+        }
+        if (From > To){
+            throw new RangeError([From, " is higher than ", To].join(''))
+        }
+        let Arr = []
+        for (var x = From; x < To;x++){
+            if (this[x] === undefined){break}
+            Arr.push(this[x])
+        }
+        return Arr
+    }
+})();
+
+
 class search{
     static class1 = class parentval{
         constructor(classes,id,parent,src,length){
@@ -15,14 +45,47 @@ class search{
         if (frameid != null){return window.parent.document.getElementById(frameid).contentDocument.getElementById(id)}
         else {return document.getElementById(id)}
     }
-    
+
     static searchbyclassname(frameid,classname){
         if (frameid != null){return window.parent.document.getElementById(frameid).contentDocument.getElementsByClassName(classname)}
         else {return document.getElementsByClassName(classname)}
     }
-    
-    static searchimage(frameid){
-        const img = document.getElementsByTagName('img');
+
+    static async loopers(frameid,url){
+        if ($.inArray(frameid,[undefined,null]) != -1) {
+            if ($.inArray(search.searchimage.frameid,[undefined,null]) == -1) {
+                frameid = search.searchimage.frameid
+            }
+        }
+        search.loopers.iframeready = false
+        const delayl = ms => new Promise(resolve => setTimeout(resolve, ms));
+        async function * delaying(count) {
+            for (let i = 0; i < count; i++) {
+                yield delayl(1000).then(() => i);
+                if (search.loopers.iframeready === true) {
+                    return true
+                }else {}
+            }
+            return false
+        }
+        if ($.inArray(frameid,[undefined,null]) != -1){
+            let ifr = document.createElement('iframe')
+            ifr.src = url
+            search.searchimage.frameid = ifr.id = "ifrmexmp"
+            ifr.addEventListener('load', function(){search.searchimage(ifr.id)})
+            top.document.body.append(ifr)
+        }else {
+            top.document.getElementById(frameid).src = url
+            top.document.getElementById(frameid).addEventListener('load', function(){search.searchimage(search.searchimage.frameid)})
+        }
+        (async function loop() {
+            for await (let i of delaying(1800)){};
+        })();
+    }
+
+    static async searchimage(frameid=null){
+        if (frameid != null) {var img = top.document.getElementById(frameid).contentDocument.querySelectorAll('img')
+        }else {var img = document.getElementsByTagName('img');}
         var parents = [];
         var realimage = [];
         var tmpparents = [];
@@ -32,13 +95,12 @@ class search{
         var x = 0;
         var xx = 0;
         var y = 0;
-        
         for (x = 0; x<img.length;x++){
             this.current = img[x];
             if (parents.includes(this.current.parentElement)){
             } else {
                 if (parents.some(el => el.imgsrc == this.current.src)){
-                }else if (this.current.parentElement.className != '' || this.current.parentElement.id != ''){
+                }else if (this.current.parentElement.className != '' && this.current.parentElement !== undefined || this.current.parentElement.id != '' && this.current.parentElement !== undefined){
                     if (this.current.parentElement.className != '' && this.current.parentElement.id == ''){
                         this.imgval = this.current.src;
                         this.classval = this.current.parentElement.className;
@@ -68,7 +130,7 @@ class search{
                 }else{
                     if (parents.some(el => el.class == this.current.parentElement.className) || parents.some(el => el.id == this.current.parentElement.id)){}
                     else{
-                        if (this.current.parentElement.parentElement.className != '' && this.current.parentElement.parentElement.id == ''){
+                        if (this.current.parentElement.parentElement.className != '' && this.current.parentElement.parentElement.id != ''){
                             this.imgval = this.current.src;
                             this.classval = this.current.parentElement.parentElement.className;
                             this.found = parents.some(el => el.class == this.classval) || parents.some(el => el.imgsrc == this.imgval);
@@ -100,7 +162,7 @@ class search{
         }
 
         tmpparents = tmpparents.concat(parents)
-        
+
         this.val1 = (function algorithm1(parents){
             var realimage = []
             var same2length = []
@@ -147,7 +209,7 @@ class search{
                     var classval = same2length[x].class
                     var idval = same2length[x].id
                     if(classval != '' && idval == ''){var realimage = realimage.concat(search.searchbyclassname(frameid, classval)[0].children);
-                    }else {var realimage = realimage.concat(search.searchbyid(frameid, idval).children)}
+                                                     }else {var realimage = realimage.concat(search.searchbyid(frameid, idval).children)}
                 }
             } else{
                 for (var x=0;x < parents.length;x++){
@@ -155,14 +217,337 @@ class search{
                     var classval = parents[x].class
                     var idval = parents[x].id
                     if(classval != '' && idval == ''){var realimage = realimage.concat(search.searchbyclassname(frameid, classval)[0].children);
-                    }else {var realimage = realimage.concat(search.searchbyid(frameid, idval).children)}
+                                                     }else {var realimage = realimage.concat(search.searchbyid(frameid, idval).children)}
                 }
             }
             return realimage
         })(tmpparents);
 
         realimage = realimage.concat(this.val1)
-        
+        search.searchimage.resultsearchimage= new Array(realimage,parents)
+        search.loopers.iframeready = true
         return new Array(realimage,parents);
+    }
+}
+
+class redirect{
+    static async redirect(url,method){
+        if (method == 1){
+            this.frm = document.createElement('form')
+            this.frm.className = "traceForm"
+            this.frm.method = "post"
+            this.frm.action = 'index.php'
+            this.inp1 = document.createElement('input')
+            this.inp1.type = "text"
+            this.inp1.name = 'url'
+            this.inp1.value = url
+            this.frm.append(this.inp1)
+            this.inp1 = document.createElement('input')
+            this.inp1.type = "submit"
+            this.inp1.value = 'Trace'
+            this.frm.append(this.inp1)
+        }
+        else if (method == 2){
+            this.frm = document.createElement('form')
+            this.frm.method = "post"
+            this.frm.action = '/trace/'
+            this.inp1 = document.createElement('input')
+            this.inp1.id="url"
+            this.inp1.type="text"
+            this.inp1.name="url"
+            this.inp1.value = url
+            this.frm.append(this.inp1)
+            this.select = document.createElement('select')
+            this.select.name = "ua"
+            this.select.id = "ua"
+            this.opt1 = document.createElement("option")
+            this.opt1.value = "Wheregoes.com Redirect Checker/1.0"
+            this.opt1.selected="selected"
+            this.select.append(this.opt1)
+            this.frm.append(this.select)
+            this.inp1 = document.createElement('input')
+            this.inp1.value = ''
+            this.inp1.name="phn"
+            this.inp1.type="text"
+            this.frm.append(this.inp1)
+            this.inp1 = document.createElement('input')
+            this.inp1.value = '3f6fdd457jk98fatr738924dg5hydsrg'
+            this.inp1.name="php"
+            this.inp1.type="text"
+            this.frm.append(this.inp1)
+        } 
+        let data = new URLSearchParams();
+        let urls = method == 1 ? 'https://corsanywhere.herokuapp.com/http://redirectcheck.com/' : 'https://corsanywhere.herokuapp.com/https://wheregoes.com/trace/'
+        for (const pair of new FormData(this.frm)) {
+            data.append(pair[0], pair[1]);
+        }
+
+        async function getdata(method){
+            var list_obj = []
+            if (method == 1) {
+                if (!redirect.redirect.resval.getElementsByClassName('content-middle')[1].innerText.includes('Maximum number of queries (40) used today')){
+                    let list_result = redirect.redirect.resval.getElementsByClassName('content-middle')[1].children[1].innerText.split('\n')
+                    let obj_result
+                    let current_url
+                    let current_value
+                    let current_arrayindex
+                    let shift_current_value
+                    list_result.forEach((description, x) => {
+                        current_value = list_result[x].split(':')
+                        current_arrayindex = list_obj.ArrayindexOf(null,current_url)
+                        if (list_result[x].substring(0,5).includes('http')){
+                            obj_result = new Object
+                            current_url = list_result[x]
+                            list_obj.push(new Array(current_url,obj_result))
+                            
+                        }
+                        else if (list_result[x] == ""){}
+                        else if (current_value.length > 1) {shift_current_value = current_value.shift();list_obj[current_arrayindex][1][shift_current_value] = current_value.join(':')}
+                        else if (list_result[x].substring(0,5).includes('HTTP')) {list_obj[current_arrayindex][1]["HTTP_ver"] = list_result[x].split(' ')[0];list_obj[current_arrayindex][1]["Status_code"] = list_result[x].split(' ')[1]}
+                        
+                    })
+                    redirect.redirect["resdata"] = list_obj
+                    return list_obj
+                }else(await redirect.redirect(url,2))
+            }else {
+                var objlist
+                var listhyml = redirect.redirect.resval.getElementsByClassName('trace-results')[0].children
+                for (let x = 0; x < listhyml.length; x++) {
+                    if (x == listhyml.length-1){break}
+                    if (x == 0){
+                        var obj1 = listhyml[x].innerText
+                    }
+                    else if (x == 1){
+                        var obj2 = listhyml[x].innerText
+                    }
+                    else if (x == 2){
+                        listhyml[x].childNodes.forEach((description,y) =>{
+                            if (y >= 2){
+                                listhyml[x].childNodes[y].childNodes.forEach((description,z) =>{
+                                    if (listhyml[x].childNodes[y].childNodes[z].className.split(' ')[1] == 'num'){
+                                        objlist = {}
+                                        objlist["Redirect"] = listhyml[x].childNodes[y].childNodes[z].innerText
+                                    }
+                                    else if (listhyml[x].childNodes[y].childNodes[z].className.split(' ')[1] == 'status'){
+                                        objlist["Status_code"] = listhyml[x].childNodes[y].childNodes[z].innerText
+                                    }
+                                    else if (listhyml[x].childNodes[y].childNodes[z].className.split(' ')[1] == 'url') {
+                                        listhyml[x].childNodes[y].childNodes[z].childNodes.forEach((description,v) => {
+                                            if (!listhyml[x].childNodes[y].childNodes[z].childNodes[v].innerText == ''){
+                                                if (listhyml[x].childNodes[y].childNodes[z].childNodes[v].tagName == 'A' || listhyml[x].childNodes[y].childNodes[z].childNodes[v].tagName == 'TEXTAREA'){
+                                                    let url
+                                                    url = listhyml[x].childNodes[y].childNodes[z].childNodes[v].innerText.includes('|') ? listhyml[x].childNodes[y].childNodes[z].childNodes[v].innerText.replaceAll('|','') : listhyml[x].childNodes[y].childNodes[z].childNodes[v].innerText
+                                                    list_obj.push(new Array(url,objlist))
+                                                }
+                                            }
+                                        })
+                                    }
+                                })
+                            }
+                        })
+                    }
+                }
+                list_obj.push(obj1,obj2)
+                redirect.redirect["resdata"] = list_obj
+                return list_obj
+            }
+        }
+        
+        async function fetching(urls,data){
+                return fetch(urls, {
+                method: 'post',
+                body: data,
+                headers: {
+                'Access-Control-Allow-Origin':'*'
+                },
+            })
+            .then(response => response.text()
+                 ).then(data => {
+                let parser = new DOMParser();
+                redirect.redirect["resval"] = parser.parseFromString(data, 'text/html');
+                return}).catch(err => {redirect.redirect["resval"] = err;if (navigator.onLine === false){alert('Warning you are disconnected , please press ok when your connection is back')};return new Error('\nError has occur please read "redirect.redirect.resval"')})
+        }
+        await fetching(urls,data)
+        let result = await getdata(method)
+        return result
+    }
+}
+
+class searchchp{
+    static searchhref(){
+        this.asr = [];
+        this.ds = document.querySelectorAll('[href]')
+        this.ds.forEach((description, index) => {
+            this.dss = this.ds[index].href.replace(document.domain, '').includes('https://') ? this.ds[index].href.replace(document.domain, '').replace('https://','') : this.ds[index].href.replace(document.domain, '').replace('http://','')
+            if (this.dss.length == 0) {this.dss = 'skip'}
+            if (['genre','#', document.domain.replaceBetween(document.domain.indexOf('.'),document.domain.length,''),'skip'].some(el => this.dss.toLowerCase().includes(el)) | this.dss == '/'){
+            }else {
+                if (this.ds[index].parentElement != document.head){
+                    if (['chapter','issue'].some(el => this.dss.includes(el))){
+                        if(this.asr.some(el => this.dss == el[1])){
+                        }else{
+                            this.asr.push(new Array(this.ds[index].parentElement,this.dss))
+                        }
+                    }
+                }
+            }
+        })
+        return this.asr
+    }
+}
+
+class printimg{
+    static removnimage(array){
+        this.htmllist = []
+        this.fakelist = [...array[0][0]]
+        this.fklength = this.fakelist.length
+        for (var x in this.fakelist){
+            if (x == this.fklength){break}
+            if(this.fakelist[x].tagName == 'IMG'){this.htmllist.push(this.fakelist[x])}
+        }
+        return this.htmllist
+    }
+
+    static async image_checker(url,format){
+        const delayl = ms => new Promise(resolve => setTimeout(resolve, ms));
+        // Trying To load with image()
+        try {
+            printimg.image_checker.loadingimage = undefined
+            async function load () {
+                for (var i = 0; i < 180; i++) {
+                    await delayl(250);
+                    if (printimg.image_checker.loadingimage != undefined){
+                        break
+                    }
+                }
+            }
+            let s = new jspdf.jsPDF("p", 'in', 0, 0, [500,100]);
+            let checkimg = new Image()
+            checkimg.src = url
+            s.onload = s.addImage(checkimg, format, 0,0, 500,100);printimg.image_checker.loadingimage = true
+            await load()
+            printimg.image_checker.result = new Array("No Error Found!",url)
+        }
+        catch(err){
+            console.log("Error has occur trying to fix it")
+            let err_m = err.stack
+            if(err_m.includes(`undefined (reading 'data')`) == true) {
+                try {
+                    console.log("Trying To find the redirect")
+                    await redirect.redirect(url,1);
+                    if (redirect.redirect.resval.__proto__ === document.implementation.createHTMLDocument().__proto__){
+                        console.log("Got the URL redirected")
+                        printimg.image_checker.result = new Array("Got redirected!",redirect.redirect.resdata[redirect.redirect.resdata.ArrayindexOf("Status_code","200")][0])
+                        return
+                    }else{
+                        console.log("Error when finding redirect url")
+                        printimg.image_checker.result = new Array("Error has occur please see 'redirect.redirect.resval / redirect.redirect.resdata'")
+                        return
+                    }
+                }catch(e) {printimg.image_checker.result = new Array("Error has occur please see this url ",url);throw e}
+                return
+            }else {
+                console.log(err)
+                printimg.image_checker.result = new Array("Error has occur please check the error  ",err)
+                return
+            }
+        }
+    }
+    
+    static async printing(frameid,url=null){
+        const delayl = ms => new Promise(resolve => setTimeout(resolve, ms));
+        if ($.inArray(url,[undefined,null])){}
+        else if ($.inArray(Object.getPrototypeOf(url),[String.prototype,Array.prototype] == -1)){throw new TypeError(url +' is not string nor array')}
+        if (Object.getPrototypeOf(url) === String.prototype) {this.url = [url]}else {this.url = url}
+        for (var l =0 ; l < this.url.length;l++){
+            console.log(this.url[l])
+            search.loopers(frameid,this.url[l])
+            async function load () {
+                for (var i = 0; i < 180; i++) {
+                    await delayl(1000);
+                    if (search.searchimage.resultsearchimage != undefined){
+                        break
+                    }
+                }
+            }
+            await load();
+            this.asda = this.removnimage(search.searchimage.resultsearchimage)
+            search.searchimage.resultsearchimage = undefined
+            if ($.inArray(frameid,[undefined,null]) != -1) {
+                if ($.inArray(search.searchimage.frameid,[undefined,null]) == -1) {
+                    frameid = search.searchimage.frameid
+                }
+            }
+            for (var x=0; x< this.asda.length;x++) {
+                if (this.asda[x].className == ''){this.asda[x].className = 'example123';this.clname = 'example123'
+                }else if (!this.asda[x].className.includes('example123')) {this.asda[x].className = this.asda[x].className + ' example123';this.clname = 'example123'}
+            }
+            if($.inArray(frameid,[undefined,null]) ==  -1){
+                this.lp = document.getElementById(frameid).contentDocument.querySelectorAll('img.example123')
+            }else {this.lp = document.querySelectorAll('img.example123')}
+            this.dsaa = this.lp[0].src.split('.')
+            this.set_size = [];
+            this.lp.forEach((description, index) => {
+                this.widthOfElement = parseInt(window.getComputedStyle(this.lp[index]).width)/96;
+                this.heightOfElement = parseInt(window.getComputedStyle(this.lp[index]).height)/96;
+                console.log('width : ',this.widthOfElement,'heigth : ', this.heightOfElement);
+                this.set_size.push(new Array(this.heightOfElement,this.widthOfElement)); 
+            });
+            this.rawformat = this.lp[0].src.split('.')
+            this.orient = this.set_size[0][0] >= this.set_size[0][1] ? 'p' : 'l'
+            var t = new jspdf.jsPDF(this.orient, 'in', 0, 0, this.set_size[0]);
+            for (let i = 0; i < this.lp.length; i++) {
+                let rescheck = null
+                this.rawformat = this.lp[i].src.split('.')
+                if (this.rawformat[this.dsaa.length-1] == 'jpg') {this.formatimg = 'JPEG'
+                }else if (this.rawformat[this.dsaa.length-1] == 'png') {this.formatimg = 'png'}
+                this.relimage = new Image()
+                await this.image_checker(this.lp[i].src,this.formatimg)
+                if (printimg.image_checker.result[0].split(' ')[0] == "Error"){
+                    rescheck = "Skip"
+                }else {
+                    rescheck = "Continue"
+                }
+                this.relimage.crossOrigin = "anonymous";
+                console.log(Math.max(i+1).toString()+' : {'+"\n"+'height : '+t.getPageHeight().toString()+"\n"+'width : '+ t.getPageWidth().toString()+ "\n"+ 'orient: ' + this.orient.toString() + "\n" + 'format: '+ this.formatimg + "\n}")
+                t.internal.pageSize.width = this.set_size[i][1]
+                t.internal.pageSize.height = this.set_size[i][0]
+                if (rescheck == "Continue"){
+                    this.printing.loadingimage = undefined
+                    async function load () {
+                        for (var i = 0; i < 180; i++) {
+                            await delayl(250);
+                            if (printimg.printing.loadingimage != undefined){
+                                break
+                            }
+                        }
+                    }
+                    try {
+                        this.relimage.src = printimg.image_checker.result[1]
+                        t.onload = t.addImage(this.relimage, this.formatimg, 0,0, this.set_size[i][1], this.set_size[i][0]);this.printing.loadingimage = true
+                        await load()
+                    }
+                    catch(err){
+                        let err_m = err.stack
+                        if(err_m.includes(`undefined (reading 'data')`) == true) {
+                            this.relimage.src = 'https://corsanywhere.herokuapp.com/'+printimg.image_checker.result[1]
+                            t.onload = t.addImage(this.relimage, this.formatimg, 0,0, this.set_size[i][1], this.set_size[i][0]);this.printing.loadingimage = true
+                            await load()
+                        }
+                    }
+                }else if (rescheck == "Skip"){
+                    t.text(this.set_size[i][1]/2-20, this.set_size[i][0]%2, "Skip! Because error has occur")
+                }
+                t.setPage(i + 1);
+                if (i < this.lp.length - 1) {
+                    this.orient = this.set_size[i+1][0] >= this.set_size[i][1] ? 'p' : 'l'
+                    t.addPage(this.set_size[i+1], this.orient);
+                }
+                redirect.redirect.resdata = undefined
+                redirect.redirect.resval = undefined
+            }
+            t.save(this.url[l].replace(document.location.protocol,'').replace(document.domain,'').replace('/','_')+'.pdf')
+        }
+        
     }
 }
