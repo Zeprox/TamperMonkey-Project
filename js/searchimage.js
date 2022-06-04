@@ -14,19 +14,22 @@
     }
     Number.prototype.isEven = function(){ return this % 2 == 0}
     Number.prototype.isOdd = function(){ return Math.abs(this % 2) == 1}
-    Array.prototype.ArrayFromTo = function(From,To){
-        if (typeof From !== 'number' || typeof To !== 'number'){
-            throw new TypeError("Value is not number")
+    Array.prototype.ArrObjindexOf = function(value,key=undefined) {
+        key = typeof key == 'string' ? key : undefined
+        for(var x =0; x< this.length;x++){
+            try {
+                if (this[x].includes(value)){return x}
+                else if (key !== undefined && this[x][1][key].includes(value)){return x}
+            }
+            catch(err){
+                if(err.name === 'TypeError'){
+                    if(this[x].__proto__ == HTMLAnchorElement.prototype){
+                        if(this[x] == value) {return x}
+                    }
+                }
+            }
+
         }
-        if (From > To){
-            throw new RangeError([From, " is higher than ", To].join(''))
-        }
-        let Arr = []
-        for (var x = From; x < To;x++){
-            if (this[x] === undefined){break}
-            Arr.push(this[x])
-        }
-        return Arr
     }
     HTMLElement.prototype.getElementsByInnerText = function (text, escape) {
         var nodes  = this.querySelectorAll("*");
@@ -314,7 +317,7 @@ class redirect{
                     let shift_current_value
                     list_result.forEach((description, x) => {
                         current_value = list_result[x].split(':')
-                        current_arrayindex = list_obj.ArrayindexOf(null,current_url)
+                        current_arrayindex = list_obj.ArrObjindexOf(current_url)
                         if (list_result[x].substring(0,5).includes('http')){
                             obj_result = new Object
                             current_url = list_result[x]
@@ -457,7 +460,7 @@ class printimg{
                     await redirect.redirect(url,1);
                     if (redirect.redirect.resval.__proto__ === document.implementation.createHTMLDocument().__proto__){
                         console.log("Got the URL redirected")
-                        printimg.image_checker.result = new Array("Got redirected!",redirect.redirect.resdata[redirect.redirect.resdata.ArrayindexOf("Status_code","200")][0])
+                        printimg.image_checker.result = new Array("Got redirected!",redirect.redirect.resdata[redirect.redirect.resdata.ArrObjindexOf("Status_code","200")][0])
                         return
                     }else{
                         console.log("Error when finding redirect url")
