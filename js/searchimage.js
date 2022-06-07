@@ -51,6 +51,33 @@
         }
         return result;
     };
+    String.prototype.findAll = function(val,limit=null){
+        var result = {}
+        var numb = 0
+        if(typeof val == 'object'){
+            if(val.__proto__ == Array().__proto__){
+                for(let x =0;x < this.length;x++){
+                    if (limit !== null && numb >= limit){break}
+                    if(val.some(el => this[x] == el)){
+                        result[numb] = {index:x,sub:this[x]}
+                        numb++
+                    }
+                }
+            }
+        }
+        else if (typeof val == 'string'){
+            for(let x =0;x < this.length;x++){
+                if (limit !== null && numb >= limit){break}
+                if(this[x] == val){
+                    result[numb] = {index:x,sub:this[x]}
+                    numb++
+                }
+            }
+        }
+        result['str'] = this
+        result.__proto__.length = numb+1
+        return result
+    }
 })();
 
 
