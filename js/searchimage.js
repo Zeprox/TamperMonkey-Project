@@ -14,6 +14,20 @@
     }
     Number.prototype.isEven = function(){ return this % 2 == 0}
     Number.prototype.isOdd = function(){ return Math.abs(this % 2) == 1}
+    Array.prototype.ArrayFromTo = function(From,To){
+        if (typeof From !== 'number' || typeof To !== 'number'){
+            throw new TypeError("Value is not number")
+        }
+        if (From > To){
+            throw new RangeError([From, " is higher than ", To].join(''))
+        }
+        let Arr = []
+        for (var x = From; x < To;x++){
+            if (this[x] === undefined){break}
+            Arr.push(this[x])
+        }
+        return Arr
+    }
     Array.prototype.ArrObjindexOf = function(value,key=undefined) {
         key = typeof key == 'string' ? key : undefined
         for(var x =0; x< this.length;x++){
