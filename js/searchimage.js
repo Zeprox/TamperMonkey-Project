@@ -424,25 +424,105 @@ class redirect{
 }
 
 class searchchp{
-    static searchhref(){
-        this.asr = [];
-        this.ds = document.querySelectorAll('[href]')
-        this.ds.forEach((description, index) => {
-            this.dss = this.ds[index].href.replace(document.domain, '').includes('https://') ? this.ds[index].href.replace(document.domain, '').replace('https://','') : this.ds[index].href.replace(document.domain, '').replace('http://','')
-            if (this.dss.length == 0) {this.dss = 'skip'}
-            if (['genre','#', document.domain.replaceBetween(document.domain.indexOf('.'),document.domain.length,''),'skip'].some(el => this.dss.toLowerCase().includes(el)) | this.dss == '/'){
-            }else {
-                if (this.ds[index].parentElement != document.head){
-                    if (['chapter','issue'].some(el => this.dss.includes(el))){
-                        if(this.asr.some(el => this.dss == el[1])){
-                        }else{
-                            this.asr.push(new Array(this.ds[index].parentElement,this.dss))
+    static async searchhref(){
+        function sorting(c,y){
+            let res = []
+            for (let x = 0; x < c.length;x++){
+                let a = Array.from(document.querySelectorAll(y[x] == 'Class' ? '.'+c[x].replaceAll(' ','.') : '#'+c[x].replaceAll(' ','#')))
+                let t = []
+                for (let x = 0; x < a.length; x++) {
+                    t.push(a[x].textContent.findAll(['1','2','3','4','5','6','7','8','9','0']))
+                }
+                res.push(t)
+            }
+            var start = []
+            var els = []
+            for (var x  = 0 ; x < res.length ; x++){
+                for (var y =0 ; y < res[x].length ; y++){
+                    if (res[x][y][0]['sub'] == '0' || res[x][y][0]['sub'] == '1' && res[x][y].length == 1){
+                        if (res[x][y][0]['sub'] == '0'){
+                            var s = ''
+                            var r
+                            for ( let z =0; z < res[x][y].length ; z++){
+                                r = z == 0 ? s+res[x][y][z].sub : r+s
+                                s = z+1 < res[x][y].length ? res[x][y][z+1].sub : ''
+                            }
+                            start.push(r)
                         }
+                        else if (res[x][y][0]['sub'] == '1'){
+                            start.push(r2[x][y][0].sub)
+                        }
+                    }else {
+                        var s = ''
+                        var r
+                        for ( let z =0; z < res[x][y].length ; z++){
+                            r = z == 0 ? s+res[x][y][z].sub : r+s
+                            s = z+1 < res[x][y].length ? res[x][y][z+1].sub : ''
+                        }
+                        els.push(r)
+                    }
+                }
+            }
+            res = [...els,...start]
+            let met = res.filter(el => el[el.length-1] == 1 && Math.abs(el.substr(0, el.length-1)) == 0 || el[el.length-1] == 0 && Math.abs(el.substr(0, el.length-1)) == 0).length < 2 ? res.indexOf(res.filter(el => el[el.length-1] == 1 && Math.abs(el.substr(0, el.length-1)) == 0 || el[el.length-1] == 0 && Math.abs(el.substr(0, el.length-1)) == 0)[0]) : res.findLastIndex(el => el == res.filter(el => el[el.length-1] == 1 && Math.abs(el.substr(0, el.length-1)) == 0 || el[el.length-1] == 0 && Math.abs(el.substr(0, el.length-1)) == 0)[res.filter(el => el[el.length-1] == 1 && Math.abs(el.substr(0, el.length-1)) == 0 || el[el.length-1] == 0 && Math.abs(el.substr(0, el.length-1)) == 0).length-1])
+            var bf = met > res.length/2 && res.indexOf(res.filter(el => el[el.length-1] == 1 && Math.abs(el.substr(0, el.length-1)) == 0|| el[el.length-1] == 0&& Math.abs(el.substr(0, el.length-1)) == 0)[0]) !=  0 && res.length != 0 || res.length != 1? 'B' : 'F'
+            return bf
+        }
+        var lastdss
+        var asr = [];
+        var classes = [];
+        var ds = document.querySelectorAll('[href]')
+        ds.forEach((description, index) => {
+            let dss = ds[index].href.replace(document.domain, '').replace(document.location.protocol+'//','')
+            let dst = ds[index].href.replaceAll(document.location.href,'')
+            if (dss.length == 0) {this.dss = 'skip'}
+            if (['genre','#', document.domain.replaceBetween(document.domain.indexOf('.'),document.domain.length,''),'skip'].some(el => dss.toLowerCase().includes(el)) | dss == '/'){
+            }else {
+                if (ds[index].parentElement != document.head){
+                    if (['chap','issue'].some(el => dss.includes(el))){
+                        if (dss.includes('.') || ['?'].some(el => dst[0] == el) || dss == lastdss){
+                        }else{
+                            let t = ds[index].className != '' ? ds[index].className : ds[index].id != '' ? ds[index].id : ds[index].className = 'classeshref'
+                            let tc = ds[index].className != '' ? 'Class' : ds[index].id != '' ? 'Id': ''
+                            let asrval = asr.find(el => el[3] == t ? true : false)
+                            if(asrval){
+                                asr.some(el => t == el[3]?el[4]++:false)
+                            }else{
+                                asr.push(new Array(ds[index].parentElement,dss,tc,t,1))
+                            }
+                        }
+                        lastdss = dss
                     }
                 }
             }
         })
-        return this.asr
+        // Eliminating Different link with same classes / id
+        var xs = []
+        var xsr = []
+        for (var x = 0; x < asr.length;x++){
+            let xss = []
+            let xsc = Array.from(document.querySelectorAll(asr[x][2] == 'Class' ? '.'+asr[x][3].replaceAll(' ','.') : '#'+asr[x][3].replaceAll(' ','#'))).ArrayFromTo(0,5);
+            for (var y = 0; y<xsc.length;y++){if(xsc[y] != undefined){xss.push(xsc[y])}}
+            xs.push(xss)
+        }
+        for (var x = 0; x < xs.length;x++){
+            let trfl = []
+            let cnt = []
+            let cl = []
+            for(var y =0; y < xs[x].length;y++){if(xs[x][y].href.includes(document.location.origin) || xs[x][y].href[0] == '/'){if(xs[x][y].href.includes(document.location.pathname)){trfl.push(true)}else if(document.location.pathname.split('/').filter(el => el).some(els => xs[x][y].href.includes(els))){trfl.push(true)}else if(['chap'].some(el => xs[x][y].href.replace(document.location.protocol+'//','').replace(document.location.host+'/','').split('/')[0].includes(el))){trfl.push(true)}}
+            }
+            trfl.forEach((desc,x) => {if(desc == true){cnt++}})
+            if (cnt != 0){
+                xsr.push(xs[x][0].className != '' ? xs[x][0].className : xs[x][0].Id)
+            }
+        }
+        if (xsr.length > 1){return xsr + '\n xsr has more 1 result'}
+        let cl = []
+        for (let xx=0;xx < xsr.length;xx++){
+            cl.push(asr[asr.ArrayindexOf(null,xsr[xx])][2])
+        }
+        let res = await sorting(xsr,cl)
+        return [xs,[cl,xsr],res]
     }
 }
 
