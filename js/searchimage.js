@@ -14,9 +14,9 @@
     }
     Number.prototype.isEven = function(){ return this % 2 == 0}
     Number.prototype.isOdd = function(){
-        if(Number.isSafeInteger(this/2)){return false}
-        else if(Number.isSafeInteger(this/3)){return false}
-        else if(Number.isSafeInteger(this/this) ){return true}
+        if(Number.isSafeInteger(this/2) && String(this).length < 16 || String(this/2).includes('e') && !String(this/2).includes('.') ||  String(this).length >= 16 && !String(this/2).includes('.')){console.log(1);return false}
+        else if(Number.isSafeInteger(this/3 ) && String(this).length < 16 || String(this/3).includes('e') && !String(this/3).includes('.') ||  String(this).length >= 16 && !String(this/3).includes('.')){console.log(2);return false}
+        else if(Number.isSafeInteger(this/this)){console.log(3);return true}
         else {return true}
     }
     Array.prototype.ArrayFromTo = function(From,To){
