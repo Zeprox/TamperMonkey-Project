@@ -13,7 +13,12 @@
         }
     }
     Number.prototype.isEven = function(){ return this % 2 == 0}
-    Number.prototype.isOdd = function(){ return Math.abs(this % 2) == 1}
+    Number.prototype.isOdd = function(){
+        if(Number.isSafeInteger(this/2)){return false}
+        else if(Number.isSafeInteger(this/3)){return false}
+        else if(Number.isSafeInteger(this/this) ){return true}
+        else {return true}
+    }
     Array.prototype.ArrayFromTo = function(From,To){
         if (typeof From !== 'number' || typeof To !== 'number'){
             throw new TypeError("Value is not number")
