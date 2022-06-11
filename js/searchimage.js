@@ -94,7 +94,7 @@
             }
         }
         result['str'] = this
-        result.__proto__.length = numb+1
+        result.__proto__.length = numb
         return result
     }
 })();
